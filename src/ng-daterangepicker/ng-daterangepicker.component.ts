@@ -41,7 +41,8 @@ export let DATERANGEPICKER_VALUE_ACCESSOR: any = {
 export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit, OnChanges {
   @Input() options: NgDateRangePickerOptions;
 
-  modelValue: string;
+  @Input('dateRange') modelValue: string;
+
   opened: false | 'from' | 'to';
   date: Date;
   dateFrom: Date;
@@ -98,6 +99,11 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
 
   ngOnChanges(changes: {[propName: string]: SimpleChange}) {
     this.options = this.options || this.defaultOptions;
+    if (changes && changes.hasOwnProperty('modelValue') && changes.modelValue.currentValue) {
+      let range = changes.modelValue.currentValue.split(this.options.dateSeparator);
+      this.dateFrom = new Date(range[0]);
+      this.dateTo = new Date(range[1]);
+    }
   }
 
   initNames(): void {
