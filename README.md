@@ -48,7 +48,18 @@ export class AppComponent {
 	  theme: 'default',
 	  range: 'tm',
 	  dayNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-	  presetNames: ['This Month', 'Last Month', 'This Week', 'Last Week', 'This Year', 'Last Year', 'Start', 'End'],
+	  presetNames: {
+          thisDay: 'Today',
+          lastDay: 'Yesterday',
+          thisWeek: 'This Week',
+          lastWeek: 'Last Week',
+          thisMonth: 'This Month',
+          lastMonth: 'Last Month',
+          thisYear: 'This Year',
+          lastYear: 'Last Year',
+          from: 'Start',
+          to: 'End'
+         },
 	  dateFormat: 'yMd',
 	  outputFormat: 'DD/MM/YYYY',
 	  startOfWeek: 1,
@@ -67,8 +78,8 @@ export class AppComponent {
 
 ```ts
 export interface NgDateRangePickerOptions {
-  theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray';
-  range: 'tm' | 'lm' | 'lw' | 'tw' | 'ty' | 'ly';
+  theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray' | 'orange';
+  range: 'td' | 'ld' | 'lw' | 'tw' | 'tm' | 'lm' | 'ty' | 'ly';
   dayNames: string[];
   presetNames: string[];
   dateFormat: string;
