@@ -6,7 +6,7 @@ export interface NgDateRangePickerOptions {
   theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray' | 'orange';
   range: 'td' | 'ld' | 'lw' | 'tw' | 'tm' | 'lm' | 'ty' | 'ly';
   dayNames: string[];
-  presetNames: object;
+  presetNames: any;
   dateFormat: string;
   outputFormat: string;
   startOfWeek: number;
