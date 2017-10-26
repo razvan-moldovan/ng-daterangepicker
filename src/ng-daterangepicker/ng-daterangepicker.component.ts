@@ -4,9 +4,9 @@ import * as dateFns from 'date-fns';
 
 export interface NgDateRangePickerOptions {
   theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray' | 'orange';
-  range: 'tm' | 'lm' | 'lw' | 'tw' | 'ty' | 'ly';
+  range: 'td' | 'ld' | 'lw' | 'tw' | 'tm' | 'lm' | 'ty' | 'ly';
   dayNames: string[];
-  presetNames: string[];
+  presetNames: object;
   dateFormat: string;
   outputFormat: string;
   startOfWeek: number;
@@ -49,17 +49,29 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
   dateTo: Date;
   dayNames: string[];
   days: IDay[];
-  range: 'tm' | 'lm' | 'lw' | 'tw' | 'ty' | 'ly';
+  range: 'td' | 'ld' | 'lw' | 'tw' | 'tm' | 'lm' | 'ty' | 'ly';
   defaultOptions: NgDateRangePickerOptions = {
     theme: 'default',
     range: 'tm',
     dayNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    presetNames: ['This Month', 'Last Month', 'This Week', 'Last Week', 'This Year', 'Last Year', 'Start', 'End'],
+    // presetNames: ['Current Month', 'Previous Month', 'Current Week', 'Previous Week', 'Current Year', 'Previous Year', 'Start', 'End'],
+    presetNames: {
+     thisDay: 'Today',
+     lastDay: 'Yesterday',
+     thisWeek: 'This Week',
+     lastWeek: 'Last Week',
+     thisMonth: 'This Month',
+     lastMonth: 'Last Month',
+     thisYear: 'This Year',
+     lastYear: 'Last Year',
+     from: 'Start',
+     to: 'End'
+    },
     dateFormat: 'yMd',
     outputFormat: 'DD/MM/YYYY',
     startOfWeek: 0,
     dateSeparator: '-'
-  }
+  };
 
   private onTouchedCallback: () => void = () => { };
   private onChangeCallback: (_: any) => void = () => { };
@@ -195,20 +207,29 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.generateCalendar();
   }
 
-  selectRange(range: 'tm' | 'lm' | 'lw' | 'tw' | 'ty' | 'ly'): void {
+  selectRange(range: 'td' | 'ld' | 'lw' | 'tw' | 'tm' | 'lm' | 'ty' | 'ly'): void {
+    this.range = range;
     let today = dateFns.startOfDay(new Date());
     // set current year, this is overwritten only in 'Last year' selection
     dateFns.setYear(today, today.getFullYear());
+
     switch (range) {
-      case 'tm':
-        this.date = dateFns.setMonth(today, today.getMonth());
-        this.dateFrom = dateFns.startOfMonth(today);
-        this.dateTo = dateFns.endOfMonth(today);
+      case 'td':
+        this.date = today;
+        this.dateFrom = today;
+        this.dateTo = today;
         break;
-      case 'lm':
-        this.date = today = dateFns.subMonths(today, 1);
-        this.dateFrom = dateFns.startOfMonth(today);
-        this.dateTo = dateFns.endOfMonth(today);
+      case 'ld':
+        let yesterday = dateFns.subDays(today, 1);
+        this.date = yesterday;
+        this.dateFrom = yesterday;
+        this.dateTo = yesterday;
+        break;
+      case 'tw':
+        this.date = dateFns.setMonth(today, today.getMonth());
+        this.dateFrom = dateFns.startOfWeek(today, {weekStartsOn: this.options.startOfWeek});
+        // this.dateTo = dateFns.endOfWeek(today, {weekStartsOn: this.options.startOfWeek});
+        this.dateTo = dateFns.endOfDay(today);
         break;
       case 'lw':
         today = dateFns.subWeeks(today, 1);
@@ -216,24 +237,34 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
         this.dateFrom = dateFns.startOfWeek(today, {weekStartsOn: this.options.startOfWeek});
         this.dateTo = dateFns.endOfWeek(today, {weekStartsOn: this.options.startOfWeek});
         break;
-      case 'tw':
+      case 'tm':
         this.date = dateFns.setMonth(today, today.getMonth());
-        this.dateFrom = dateFns.startOfWeek(today, {weekStartsOn: this.options.startOfWeek});
-        this.dateTo = dateFns.endOfWeek(today, {weekStartsOn: this.options.startOfWeek});
+        this.dateFrom = dateFns.startOfMonth(today);
+        // this.dateTo = dateFns.endOfMonth(today);
+        this.dateTo = dateFns.endOfDay(today);
+        break;
+      case 'lm':
+        this.date = today = dateFns.subMonths(today, 1);
+        this.dateFrom = dateFns.startOfMonth(today);
+        this.dateTo = dateFns.endOfMonth(today);
         break;
       case 'ty':
         this.date = dateFns.setYear(today, today.getFullYear());
         this.dateFrom = dateFns.startOfYear(today);
-        this.dateTo = dateFns.endOfYear(today);
+        // this.dateTo = dateFns.endOfYear(today);
+        this.dateTo = dateFns.endOfDay(today);
         break;
       case 'ly':
         this.date = today = dateFns.subYears(today, 1);
         this.dateFrom = dateFns.startOfYear(today);
         this.dateTo = dateFns.endOfYear(today);
         break;
+      // case 'custom':
+      //   this.date = today = dateFns.subYears(today, 1);
+      //   this.dateFrom = dateFns.startOfYear(today);
+      //   this.dateTo = dateFns.endOfYear(today);
+      //   break;
     }
-
-    this.range = range;
     this.generateCalendar();
   }
 
