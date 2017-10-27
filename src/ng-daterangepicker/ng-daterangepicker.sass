@@ -162,6 +162,8 @@
           &.is-within-range
             background: $blue-light
             color: $dark
+          &.not-within-range
+            cursor: no-drop
 
           &.is-from, &.is-first-weekday
             border-top-left-radius: 50%
@@ -198,7 +200,8 @@
         margin-top: 40px
         .side-button
           background: $white
-          border-radius: 15px
+          // border-radius: 15px
+          border-radius: 1px
           border: 1px solid $blue
           height: 30px
           width: 138px

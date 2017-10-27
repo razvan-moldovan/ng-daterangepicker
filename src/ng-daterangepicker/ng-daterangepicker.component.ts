@@ -17,6 +17,7 @@ export interface IDay {
   date: Date;
   day: number;
   weekday: number;
+  notWithinRange: boolean,
   today: boolean;
   firstMonthDay: boolean;
   lastMonthDay: boolean;
@@ -138,7 +139,8 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
         visible: true,
         from: dateFns.isSameDay(this.dateFrom, d),
         to: dateFns.isSameDay(this.dateTo, d),
-        isWithinRange: dateFns.isWithinRange(d, this.dateFrom, this.dateTo)
+        isWithinRange: dateFns.isWithinRange(d, this.dateFrom, this.dateTo),
+        notWithinRange: !dateFns.isWithinRange(d, this.dateFrom, this.dateTo)
       };
     });
 
@@ -157,7 +159,8 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
           visible: false,
           from: false,
           to: false,
-          isWithinRange: false
+          isWithinRange: false,
+          notWithinRange: false
         };
       });
     }
@@ -176,6 +179,16 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
 
   closeCalendar(e: MouseEvent): void {
     this.opened = false;
+  }
+
+  addClassOutOfRange(e: MouseEvent, index: number) {
+    this.days[index].notWithinRange = false;
+    let selectedDate: Date = this.days[index].date;
+    if (this.opened === 'from') {
+      this.days[index].notWithinRange = dateFns.isAfter(selectedDate, this.dateTo);
+    } else if (this.opened === 'to') {
+      this.days[index].notWithinRange = dateFns.isBefore(selectedDate, this.dateFrom);
+    }
   }
 
   selectDate(e: MouseEvent, index: number): void {

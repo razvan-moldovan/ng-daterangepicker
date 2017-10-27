@@ -12,7 +12,7 @@ export class AppComponent implements OnInit  {
   ngOnInit() {
     this.options = {
       theme: 'default',
-      range: 'tm',
+      range: 'tw',
       dayNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       presetNames: {
         thisDay: 'Today',

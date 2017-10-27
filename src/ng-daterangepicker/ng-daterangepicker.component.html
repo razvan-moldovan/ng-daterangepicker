@@ -56,26 +56,29 @@
         <div class="day"
              *ngFor="let d of days; let i = index;"
              [ngClass]="{
+               'not-within-range': d.notWithinRange,
                'is-within-range': d.isWithinRange,
                'is-from': d.from,
                'is-to': d.to,
                'is-first-weekday': d.weekday === 1 || d.firstMonthDay,
                'is-last-weekday': d.weekday === 0 || d.lastMonthDay }"
+             (mouseover)="addClassOutOfRange($event, i)"
              (click)="selectDate($event, i)">
           <span *ngIf="d.visible" class="day-num" [class.is-active]="d.from || d.to">{{ d.day }}</span>
+
         </div>
       </div>
     </div>
     <div class="side-container">
       <div class="side-container-buttons">
-        <button type="button" class="side-button" *ngIf="options.presetNames.thisDay" (click)="selectRange('td')" [class.is-active]="range === 'td'">{{options.presetNames.thisDay}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.lastDay" (click)="selectRange('ld')" [class.is-active]="range === 'ld'">{{options.presetNames.lastDay}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.thisWeek" (click)="selectRange('tw')" [class.is-active]="range === 'tw'">{{options.presetNames.thisWeek}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.lastWeek" (click)="selectRange('lw')" [class.is-active]="range === 'lw'">{{options.presetNames.lastWeek}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.thisMonth" (click)="selectRange('tm')" [class.is-active]="range === 'tm'">{{options.presetNames.thisMonth}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.lastMonth" (click)="selectRange('lm')" [class.is-active]="range === 'lm'">{{options.presetNames.lastMonth}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.thisYear" (click)="selectRange('ty')" [class.is-active]="range === 'ty'">{{options.presetNames.thisYear}}</button>
-        <button type="button" class="side-button" *ngIf="options.presetNames.lastYear" (click)="selectRange('ly')" [class.is-active]="range === 'ly'">{{options.presetNames.lastYear}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.thisDay" (click)="selectRange('td')" [class.is-active]="range === 'td'">{{options.presetNames.thisDay}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.lastDay" (click)="selectRange('ld')" [class.is-active]="range === 'ld'">{{options.presetNames.lastDay}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.thisWeek" (click)="selectRange('tw')" [class.is-active]="range === 'tw'">{{options.presetNames.thisWeek}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.lastWeek" (click)="selectRange('lw')" [class.is-active]="range === 'lw'">{{options.presetNames.lastWeek}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.thisMonth" (click)="selectRange('tm')" [class.is-active]="range === 'tm'">{{options.presetNames.thisMonth}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.lastMonth" (click)="selectRange('lm')" [class.is-active]="range === 'lm'">{{options.presetNames.lastMonth}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.thisYear" (click)="selectRange('ty')" [class.is-active]="range === 'ty'">{{options.presetNames.thisYear}}</button>
+        <button type="button" class="side-button btn btn-sm" *ngIf="options.presetNames.lastYear" (click)="selectRange('ly')" [class.is-active]="range === 'ly'">{{options.presetNames.lastYear}}</button>
       </div>
       <span class="close-icon" (click)="closeCalendar($event)">
         <svg width="20px" height="20px" viewBox="47 44 20 20" version="1.1">
