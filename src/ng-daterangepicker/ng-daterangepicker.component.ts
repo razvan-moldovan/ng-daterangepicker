@@ -1,4 +1,7 @@
-import { Component, OnInit, HostListener, ElementRef, forwardRef, Input, OnChanges, SimpleChange } from '@angular/core';
+import {
+  Component, OnInit, HostListener, ElementRef, forwardRef, Input, OnChanges, SimpleChange,
+  EventEmitter, Output
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import * as dateFns from 'date-fns';
 
@@ -43,6 +46,8 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
   @Input() options: NgDateRangePickerOptions;
 
   @Input('dateRange') modelValue: string;
+
+  @Output() updateSelection = new EventEmitter<any>();
 
   opened: false | 'from' | 'to';
   date: Date;
@@ -116,6 +121,7 @@ export class NgDateRangePickerComponent implements ControlValueAccessor, OnInit,
       let range = changes.modelValue.currentValue.split(this.options.dateSeparator);
       this.dateFrom = new Date(range[0]);
       this.dateTo = new Date(range[1]);
+      this.updateSelection.emit(changes.modelValue.currentValue);
     }
   }
 

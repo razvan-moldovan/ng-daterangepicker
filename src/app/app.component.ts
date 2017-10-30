@@ -32,4 +32,8 @@ export class AppComponent implements OnInit  {
       dateSeparator: '_'
     };
   }
+  dateRangeChanged(dateRange) {
+    alert()
+    console.log(dateRange);
+  }
 }

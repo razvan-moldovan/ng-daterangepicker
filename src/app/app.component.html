@@ -38,7 +38,7 @@
         </div>
         <div class="column is-4 is-offset-4">
           <div class="is-fullwidth has-text-centered">
-            <ng-daterangepicker [(ngModel)]="value" [dateRange]="value" [options]="options"></ng-daterangepicker>
+            <ng-daterangepicker [(ngModel)]="value" [dateRange]="value" [options]="options" (updateSelection)="dateRangeChanged($event)"></ng-daterangepicker>
           </div>
         </div>
       </div>
